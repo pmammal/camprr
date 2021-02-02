@@ -3,8 +3,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-// const { campgroundSchema, reviewSchema } = require('./schemas.js');
-
+const session = require('express-session');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const campgrounds = require('./routes/campgrounds');
@@ -33,6 +32,14 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.use(express.static(path.join(__dirname, 'public')));
+
+const sessionConfig = {
+	secret            : 'thisshouldbeabettersecret!',
+	resave            : false,
+	saveUninitialized : true
+};
+app.use(session(sessionConfig));
 
 app.use('/campgrounds', campgrounds);
 app.use('/campgrounds/:id/reviews', reviews);
