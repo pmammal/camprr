@@ -18,13 +18,6 @@
                 </div>
             </div> 
             <div class="mb-3">
-                <label for="formFileMultiple" class="form-label">Add More Images</label>
-                <input type="file" class="form-control" id="formFileMultiple" name="image" multiple required>
-                <div class="invalid-feedback">
-                    This campground would look much better with a picture.
-                </div>
-            </div>
-            <div class="mb-3">
                 <label for="price" class="form-label">Campground Price</label>
                 <div class="input-group">
                     <span class="input-group-text" id="price-label">$</span>
@@ -40,12 +33,28 @@
                 <div class="valid-feedback">
                     Looks good!
                 </div>
+            </div>
+            <div class="mb-3">
+                <label for="formFileMultiple" class="form-label">Add More Images</label>
+                <input type="file" class="form-control" id="formFileMultiple" name="image" multiple>
+                <div class="invalid-feedback">
+                    This campground would look much better with a picture.
+                </div>
             </div>  
+            <div class="mb-3">
+                <%campground.images.forEach(function(img, i){%>
+                    <img src="<%=img.url%>" alt="" class="img-thumbnail">
+                    <div class="form-check-inline">
+                        <input type="checkbox" id="image-<%=i%>" name="deleteImages[]" value="<%=img.filename%>">
+                    </div>
+                    <label for="image-<%=i%>">Delete?</label>
+                <%})%> 
+            </div>
             <div class="mb-3">
                 <button class="btn btn-info">Update Campground</button>
             </div>
         </form>
-        <a href="/campgrounds/<%= campground._id %> ">Back To Campgrounds</a>
+        <a href="/campgrounds/<%=campground._id%> ">Back To Campgrounds</a>
         </div>
     </div> 
 
