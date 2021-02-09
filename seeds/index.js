@@ -30,6 +30,10 @@ const seedDB = async () => {
 			description :
 				'Mauris sed bibendum mi. Ut et porta risus. Nunc ligula mi, tincidunt interdum nibh quis, elementum sagittis mauris. Mauris accumsan tincidunt diam, eget porttitor velit imperdiet in. Praesent iaculis interdum tortor. Etiam id dui diam. Ut nibh lorem, pharetra in commodo rutrum, lobortis non nibh. In auctor risus justo, vel fringilla dui porta eu. ',
 			price,
+			geometry: {
+				type: "Point",
+				coordinates: [-113.1331, 47.0202]
+			},
 			images      : [
 				{
 					url      :
