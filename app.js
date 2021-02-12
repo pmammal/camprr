@@ -19,7 +19,7 @@ const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 const MongoStore = require('connect-mongo')(session);
-const dbUrl = 'mongodb://localhost:27017/camprr';
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/camprr';
 //DATABASE CONNECTION************************************
 // 'mongodb://localhost:27017/camprr'
 mongoose.connect(dbUrl, {
@@ -46,11 +46,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(mongoSanitize());
-//SESSION************************************************
+
+const secret = process.env.SECRET || 'thisshouldbeabettersecret';
 
 const store = new MongoStore({
 	url        : dbUrl,
-	secret     : 'thishouldbeabettersecret!',
+	secret,
 	touchAfter : 24 * 3600
 });
 store.on('error', function (e) {
