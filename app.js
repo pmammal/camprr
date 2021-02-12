@@ -18,8 +18,11 @@ const helmet = require('helmet');
 const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
+const MongoStore = require('connect-mongo')(session);
+const dbUrl = 'mongodb://localhost:27017/camprr';
 //DATABASE CONNECTION************************************
-mongoose.connect('mongodb://localhost:27017/camprr', {
+// 'mongodb://localhost:27017/camprr'
+mongoose.connect(dbUrl, {
 	useNewUrlParser    : true,
 	useCreateIndex     : true,
 	useUnifiedTopology : true,
@@ -44,6 +47,15 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(mongoSanitize());
 //SESSION************************************************
+
+const store = new MongoStore({
+	url        : dbUrl,
+	secret     : 'thishouldbeabettersecret!',
+	touchAfter : 24 * 3600
+});
+store.on('error', function (e) {
+	console.log('session store error', e);
+});
 const sessionConfig = {
 	name              : 'session',
 	secret            : 'thisshouldbeabettersecret!',
@@ -59,7 +71,7 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 app.use(flash());
-app.use(helmet({ contentSecurityPolicy: false }));
+app.use(helmet());
 
 const scriptSrcUrls = [
 	'https://stackpath.bootstrapcdn.com',
